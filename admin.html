@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="StreamVerse Admin Panel — Manage channels, streams, and schedules" />
+  <title>StreamVerse — Admin Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-container">
+      <div class="login-brand">
+        <div class="nav-brand-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect x="3" y="6" width="22" height="14" rx="3" stroke="currentColor" stroke-width="2"/>
+            <circle cx="14" cy="13" r="3" fill="currentColor"/>
+            <path d="M9 4.5 14 7l5-2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span>Stream<span class="accent">Verse</span></span>
+      </div>
+      <p class="login-subtitle">Admin Access Required</p>
+      <form class="login-form" id="loginForm">
+        <div class="form-group">
+          <label for="adminUsername">Username</label>
+          <input type="text" id="adminUsername" placeholder="Enter username" autocomplete="username" required />
+        </div>
+        <div class="form-group">
+          <label for="adminPassword">Password</label>
+          <input type="password" id="adminPassword" placeholder="Enter password" autocomplete="current-password" required />
+        </div>
+        <div class="login-error" id="loginError" role="alert"></div>
+        <button type="submit" class="btn btn-primary btn-lg btn-full" id="loginBtn">
+          <span class="btn-text">Sign In</span>
+          <span class="btn-loader" style="display:none">Loading...</span>
+        </button>
+      </form>
+      <p class="login-hint">Default credentials are configured via environment variables.</p>
+    </div>
+  </div>
+
+  <!-- ADMIN DASHBOARD -->
+  <div class="admin-app" id="adminApp" style="display:none">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="nav-brand-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
+            <rect x="3" y="6" width="22" height="14" rx="3" stroke="currentColor" stroke-width="2"/>
+            <circle cx="14" cy="13" r="3" fill="currentColor"/>
+            <path d="M9 4.5 14 7l5-2.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span>Stream<span class="accent">Verse</span></span>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#dashboard" class="sidebar-link active" data-section="dashboard">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="#channels" class="sidebar-link" data-section="channels">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M6 2h12M6 22h12"/></svg>
+          <span>Channels</span>
+        </a>
+        <a href="#streams" class="sidebar-link" data-section="streams">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>Streams</span>
+        </a>
+        <a href="#schedule" class="sidebar-link" data-section="schedule">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span>Schedule</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="btn btn-ghost btn-sm btn-full" id="logoutBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+      <!-- TOP BAR -->
+      <header class="admin-topbar">
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="admin-topbar-info">
+          <h1 class="admin-page-title" id="adminPageTitle">Dashboard</h1>
+          <p class="admin-page-subtitle" id="adminPageSubtitle">Overview of your streaming platform</p>
+        </div>
+        <div class="admin-user" id="adminUser">
+          <span>admin</span>
+        </div>
+      </header>
+
+      <!-- DASHBOARD SECTION -->
+      <section class="admin-section" id="section-dashboard">
+        <div class="stats-grid" id="dashStats">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M6 2h12M6 22h12"/></svg>
+            </div>
+            <div class="stat-value" id="statChannels">0</div>
+            <div class="stat-label">Total Channels</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <div class="stat-value" id="statLive">0</div>
+            <div class="stat-label">Live Channels</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 8.5V12a10 10 0 1 1-3-7.1"/><path d="M22 4 12 14.01l-3-3"/></svg>
+            </div>
+            <div class="stat-value" id="statStreams">0</div>
+            <div class="stat-label">Total Streams</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            </div>
+            <div class="stat-value" id="statSchedule">0</div>
+            <div class="stat-label">Schedule Items</div>
+          </div>
+        </div>
+        <div class="admin-card mt-xl">
+          <h3>Quick Actions</h3>
+          <div class="quick-actions">
+            <button class="btn btn-primary" data-goto="channels">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Channel
+            </button>
+            <button class="btn btn-ghost" data-goto="streams">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Stream
+            </button>
+            <button class="btn btn-ghost" data-goto="schedule">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Schedule
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHANNELS SECTION -->
+      <section class="admin-section" id="section-channels" style="display:none">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>Channels</h3>
+            <button class="btn btn-primary btn-sm" id="addChannelBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Channel
+            </button>
+          </div>
+          <div class="table-wrapper">
+            <table class="admin-table" id="channelsTable">
+              <thead>
+                <tr><th>Name</th><th>Category</th><th>Status</th><th>Quality</th><th>Actions</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Add/Edit Channel Form -->
+        <div class="admin-card mt-xl" id="channelFormCard" style="display:none">
+          <h3 id="channelFormTitle">Add New Channel</h3>
+          <form id="channelForm" class="admin-form">
+            <input type="hidden" id="channelId" />
+            <div class="form-row">
+              <div class="form-group">
+                <label for="channelName">Channel Name *</label>
+                <input type="text" id="channelName" required />
+              </div>
+              <div class="form-group">
+                <label for="channelCategory">Category</label>
+                <select id="channelCategory">
+                  <option value="News">News</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Sports">Sports</option>
+                  <option value="Gaming">Gaming</option>
+                  <option value="General">General</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="channelStreamTitle">Stream Title</label>
+                <input type="text" id="channelStreamTitle" />
+              </div>
+              <div class="form-group">
+                <label for="channelQuality">Quality</label>
+                <select id="channelQuality">
+                  <option value="HD · 1080p">HD · 1080p</option>
+                  <option value="HD · 720p">HD · 720p</option>
+                  <option value="HD · 480p">HD · 480p</option>
+                  <option value="4K">4K</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="channelLink">Stream Link (HLS URL) *</label>
+              <input type="url" id="channelLink" placeholder="https://..." required />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="channelLogo">Logo URL</label>
+                <input type="url" id="channelLogo" placeholder="https://..." />
+              </div>
+              <div class="form-group">
+                <label for="channelPoster">Poster URL</label>
+                <input type="url" id="channelPoster" placeholder="https://..." />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="channelDescription">Description</label>
+              <textarea id="channelDescription" rows="3" placeholder="Channel description..."></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn btn-ghost" id="cancelChannelBtn">Cancel</button>
+              <button type="submit" class="btn btn-primary">Save Channel</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- STREAMS SECTION -->
+      <section class="admin-section" id="section-streams" style="display:none">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>Streams</h3>
+            <button class="btn btn-primary btn-sm" id="addStreamBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Stream
+            </button>
+          </div>
+          <div class="table-wrapper">
+            <table class="admin-table" id="streamsTable">
+              <thead>
+                <tr><th>Title</th><th>Channel</th><th>Category</th><th>Live</th><th>Actions</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="admin-card mt-xl" id="streamFormCard" style="display:none">
+          <h3 id="streamFormTitle">Add New Stream</h3>
+          <form id="streamForm" class="admin-form">
+            <input type="hidden" id="streamId" />
+            <div class="form-row">
+              <div class="form-group">
+                <label for="streamChannelId">Channel *</label>
+                <select id="streamChannelId" required></select>
+              </div>
+              <div class="form-group">
+                <label for="streamTitle">Title *</label>
+                <input type="text" id="streamTitle" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="streamCategory">Category</label>
+                <select id="streamCategory">
+                  <option value="news">News</option>
+                  <option value="entertainment">Entertainment</option>
+                  <option value="sports">Sports</option>
+                  <option value="gaming">Gaming</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="streamLive">Status</label>
+                <select id="streamLive">
+                  <option value="false">Upcoming</option>
+                  <option value="true">Live</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="streamImg">Thumbnail URL</label>
+              <input type="url" id="streamImg" placeholder="https://..." />
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn btn-ghost" id="cancelStreamBtn">Cancel</button>
+              <button type="submit" class="btn btn-primary">Save Stream</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- SCHEDULE SECTION -->
+      <section class="admin-section" id="section-schedule" style="display:none">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>Schedule</h3>
+            <button class="btn btn-primary btn-sm" id="addScheduleBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Schedule
+            </button>
+          </div>
+          <div class="table-wrapper">
+            <table class="admin-table" id="scheduleTable">
+              <thead>
+                <tr><th>Title</th><th>Channel</th><th>Date</th><th>Time</th><th>Live</th><th>Actions</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="admin-card mt-xl" id="scheduleFormCard" style="display:none">
+          <h3 id="scheduleFormTitle">Add Schedule Item</h3>
+          <form id="scheduleForm" class="admin-form">
+            <input type="hidden" id="scheduleId" />
+            <div class="form-row">
+              <div class="form-group">
+                <label for="scheduleChannelId">Channel *</label>
+                <select id="scheduleChannelId" required></select>
+              </div>
+              <div class="form-group">
+                <label for="scheduleTitle">Title *</label>
+                <input type="text" id="scheduleTitle" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="scheduleDate">Date</label>
+                <input type="text" id="scheduleDate" placeholder="Today, Tomorrow, Sat..." />
+              </div>
+              <div class="form-group">
+                <label for="scheduleHour">Time</label>
+                <input type="time" id="scheduleHour" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="scheduleCategory">Category</label>
+                <select id="scheduleCategory">
+                  <option value="News">News</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Sports">Sports</option>
+                  <option value="Gaming">Gaming</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="scheduleLive">Status</label>
+                <select id="scheduleLive">
+                  <option value="false">Upcoming</option>
+                  <option value="true">Live</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn btn-ghost" id="cancelScheduleBtn">Cancel</button>
+              <button type="submit" class="btn btn-primary">Save Schedule</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- CONFIRM MODAL -->
+  <div class="modal-overlay" id="confirmModal" aria-hidden="true">
+    <div class="modal" id="confirmModalContent" role="dialog" aria-modal="true">
+      <h3 class="modal-title" id="confirmTitle">Are you sure?</h3>
+      <p class="modal-message" id="confirmMessage">This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="confirmCancel">Cancel</button>
+        <button class="btn btn-primary" id="confirmOk">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>
